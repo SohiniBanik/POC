@@ -1,0 +1,28 @@
+server:
+  port: 8081
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:15432/mydb
+    username: admin
+    password: secret
+    driver-class-name: org.postgresql.Driver
+#  jpa:
+#    show-sql: true
+#    hibernate:
+#      ddl-auto: update
+#    properties:
+#      hibernate:
+#        dialect: org.hibernate.dialect.PostgreSQLDialect
+  kafka:
+    bootstrap-servers: localhost:9092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: com.example.poc1.serializer.LogMessageSerializer
+    consumer:
+      group-id: singer-group
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: com.example.poc1.serializer.LogMessageDeSerializer
+      properties:
+        auto.offset.reset: earliest
+
+
