@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+    <Properties>
+        <Property name="filename">logs/app.log</Property>
+        <Property name="kafkaConsumerLog">logs/kafka-consumer.log</Property>
+    </Properties>
+    <Appenders>
+        <RollingFile name="RollingFileAppender" fileName="${filename}/Logdemo.log"
+                     filePattern="${filename}/log-%d{yyyy-MM-dd_HH}-%i.log">
+            <PatternLayout pattern="%d{yyyy-MM-dd_HH} [%t] %-5level %logger{36} - %msg%n" />
+            <Policies>
+<!--                <SizeBasedTriggeringPolicy size="10KB"/>-->
+              <TimeBasedTriggeringPolicy interval="1"/>
+<!--                <TimeBasedTriggeringPolicy interval="1" unit="minute"/>gives error-->
+<!--                <CronTriggeringPolicy schedule="0 0/1 * * * ?" evaluateOnStartup="true"/>-->
+            </Policies>
+            <DefaultRolloverStrategy max="7"/>
+        </RollingFile>
+
+        <RollingFile name="KafkaConsumerAppender" fileName="${kafkaConsumerLog}consumer.log"
+                     filePattern="${kafkaConsumerLog}consumer.log-%d{yyyy-MM-dd_HH}-%i.log">
+            <PatternLayout pattern="%d{yyyy-MM-dd_HH} [%t] %-5level %logger{36} - %msg%n" />
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1"/>
+            </Policies>
+            <DefaultRolloverStrategy max="7"/>
+        </RollingFile>
+
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss} [%t] %-5level %logger{36} - %msg%n" />
+        </Console>
+
+    </Appenders>
+
+    <Loggers>
+        <Logger name="org.example.poc1" level = "info" additivity = "false">
+            <AppenderRef ref="RollingFileAppender"/>
+        </Logger>
+        <Logger name="org.example.poc1.service.KafkaConsumerService" level="info" additivity="false">
+            <AppenderRef ref="KafkaConsumerAppender"/>
+        </Logger>
+        <Root level="info">
+            <AppenderRef ref="RollingFileAppender"/>
+            <AppenderRef ref="KafkaConsumerAppender"/>
+        </Root>
+    </Loggers>
+</Configuration>
