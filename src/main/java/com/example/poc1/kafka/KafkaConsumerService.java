@@ -58,6 +58,7 @@ public class KafkaConsumerService {
 
     private void processMessage(String message) {
         LogMessage logMessage;
+        //process message 
         try{
             logMessage = objectMapper.readValue(message, LogMessage.class);
             logger.info("Consumed Message: {}", logMessage.getMessage());
